@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Welcome to Vue</title>
+  <style>
+  label {
+    display: block;
+  }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <ul>
+      <li><a href="/">Top</a></li>
+      <li>
+        <span>Basic</span>
+        <ul>
+          <li><a href="/basic/model.html">Model</a></li>
+          <li><a href="/basic/components.html">Components</a></li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div id="app">
+    <div>
+      <hello-component/>
+    </div>
+    <div is="child-component" my-message="I am a child component with an 'is' attribute."></div>
+    <div>
+      <child-component v-bind:my-message="parentMessage"/>
+    </div>
+    <div>
+      <input v-model="dynamicMessage" type="text">
+      <button @click="changeMessage(dynamicMessage)" type="button">ポチッとな</button>
+    </div>
+  </div>
+
+  <hr>
+
+  <div id="app2">
+    <counter></counter>
+    <counter></counter>
+    <counter></counter>
+  </div>
+
+  <script src="https://unpkg.com/vue"></script>
+
+  <script>
+  Vue.component('hello-component', {
+    template: '<h1>Hello World!</h1>',
+  })
+
+  const Child = {
+    template: '<div>{{myMessage}}</div>',
+    props: {
+      myMessage: String
+    }
+  }
+
+  new Vue({
+    el: '#app',
+    components: {
+      'child-component': Child
+    },
+    data: {
+      parentMessage: 'I am a parent message.',
+      dynamicMessage: ''
+    },
+    methods: {
+      changeMessage (message) {
+        this.parentMessage = message
+      }
+    }
+  })
+
+  var data = () => {
+    return {
+      counter: 0,
+      name: 'counter'
+    }
+  }
+
+  Vue.component('counter', {
+    template: '<button v-on:click="counter++" type="button">{{name}}: {{counter}}</button>',
+    data: data
+  })
+
+  new Vue({
+    el: '#app2'
+  })
+  </script>
+</body>
+</html>

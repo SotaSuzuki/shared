@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Welcome to Vue</title>
+  <style>
+  label {
+    display: block;
+  }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <ul>
+      <li><a href="/">Top</a></li>
+      <li>
+        <span>Basic</span>
+        <ul>
+          <li><a href="/basic/model.html">Model</a></li>
+          <li><a href="/basic/components.html">Components</a></li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div id="app">
+    <p v-text="renderWords('some word in v-text')"></p>
+    <button @click="countUp" type="button">count+1</button>
+    <p v-text="counter"></p>
+    <input v-model="someText" placeholder="edit me">
+    <p v-text="someText"></p>
+    <textarea v-model="multiLineText" cols="30" rows="10" placeholder="edit me"></textarea>
+    <p v-text="multiLineText"></p>
+
+    <div>
+      <label for="zoo"><input v-model="checkedItems" type="checkbox" id="zoo" value="zoo">Zoo</label>
+      <label for="aqua-park"><input v-model="checkedItems" type="checkbox" id="aqua-park" value="aqua-park">Aqua park</label>
+      <label for="home"><input v-model="checkedItems" type="checkbox" id="home" value="home">Home</label>
+      <p>Checked items: <span v-text="checkedItems"></span></p>
+    </div>
+
+    <div>
+      <label for="radio"><input v-model="picked" type="radio" id="radio" name="radio-test" value="One">One</label>
+      <label for="radio2"><input v-model="picked" type="radio" id="radio2" name="radio-test" value="Two">Two</label>
+      <p>Picked: <span v-text="picked"></span></p>
+    </div>
+
+    <div>
+      <select v-model="selected" name="selectbox" id="">
+        <option value="" disabled>Please select one</option>
+        <option value="One">One</option>
+        <option value="Two">Two</option>
+        <option value="Three">Three</option>
+      </select>
+      <p>Selected: <span v-text="selected"></span></p>
+    </div>
+
+    <div>
+      <select v-model="selectedMultiple" name="selectedMultiple" id="" multiple size="3">
+        <option>Action</option>
+        <option>Brash up</option>
+        <option>Crash burn</option>
+      </select>
+      <p>Selected: <span v-text="selectedMultiple"></span></p>
+    </div>
+
+    <div>
+      <input v-model="hoge" v-bind:value="a" type="radio">ラジオ
+      <p>{{hoge}}</p>
+    </div>
+
+    <div>
+      <input v-model="fuga" type="checkbox" v-bind:true-value="aa" v-bind:false-value="bb">チェックボックス
+      <p>{{fuga}}</p>
+    </div>
+
+    <div>
+      <select v-model="buzz" name="" id="">
+        <option value="" disabled>Select me</option>
+        <option v-bind:value="{ number: 123 }">Yup</option>
+      </select>
+      <p>{{typeof buzz}}</p>
+      <p>{{buzz.number || 0}}</p>
+    </div>
+
+    <div>
+      <input v-model.lazy="lazyvalue" type="text">
+      <p>update after change: {{lazyvalue}}</p>
+    </div>
+
+    <div>
+      <input v-model.number="age" type="number">
+      <p>age: {{age}}</p>
+    </div>
+
+    <div>
+      <input v-model.trim="msg" type="text">
+      <p>{{msg}}</p>
+    </div>
+
+  </div>
+  <script src="https://unpkg.com/vue"></script>
+
+  <script>
+    const vm = new Vue({
+      el: '#app',
+      data: {
+        counter: 0,
+        someText: '',
+        multiLineText: '',
+        checkedItems: [],
+        picked: '',
+        selected: '',
+        selectedMultiple: [],
+        hoge: false,
+        a: true,
+        fuga: false,
+        aa: 'true',
+        bb: 'false',
+        buzz: '',
+        lazyvalue: '',
+        age: 0,
+        msg: 'several'
+      },
+      methods: {
+        renderWords: function (words) {
+          return words
+        },
+        countUp: function () {
+          this.counter++
+        }
+      },
+      computed: {
+        test: function () {
+          return vm.hoge === vm.a
+        }
+      }
+    })
+
+  </script>
+</body>
+</html>
