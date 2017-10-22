@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Welcome to Vue</title>
+    <style>
+    body {
+      font-family: 'Helvetica', sans-serif;
+    }
+    #app {
+      width: 800px;
+      margin: 0 auto;
+      border: 1px solid #444;
+      padding: 10px 20px;
+    }
+    h1 {
+      font-size: 50px;
+    }
+    .text-danger {
+      background-color: red;
+    }
+    .active {
+      color: green;
+    }
+    </style>
+  </head>
+  <body>
+
+    <nav>
+      <ul>
+        <li><a href="/">Top</a></li>
+        <li>
+          <span>Basic</span>
+          <ul>
+            <li><a href="/basic">/</a></li>
+            <li><a href="/basic/conditional.html">Conditional rendering</a></li>
+            <li><a href="/basic/list.html">List rendering</a></li>
+            <li><a href="/basic/class.html">Class &amp; Style</a></li>
+            <li><a href="/basic/model.html">Model</a></li>
+            <li><a href="/basic/components.html">Components</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+
+    <div id="app">
+      <h1>{{title}}</h1>
+      <p><a v-bind:class="{ active: isActive, 'text-danger': hasError }" href="#">Blue or Red or Green ...</a></p>
+      <p><a v-bind:class="classObj" href="#">Blue or Red or Green ...</a></p>
+      <p><a v-bind:class="[isActive ? activeClass : '', hasError ? errorClass : '']" href="#">Blue or Red or Green ...</a></p>
+      <p><a v-bind:class="[{ active: isActive}, errorClass]" href="#">Blue or Red or Green ...</a></p>
+      <p :style="styleObj">I use the styleObj.</p>
+      <p :style="[styleObj, { backgroundColor: 'green', color: 'white' }]">I use the styleObj and an another one.</p>
+    </div>
+
+    <script src="https://unpkg.com/vue"></script>
+
+    <script>
+
+    const vm = new Vue({
+      el: '#app',
+      data: {
+        title: 'Class and Style',
+        isActive: true,
+        hasError: false,
+        classObj: {
+          'active': false,
+          'text-danger': false
+        },
+        activeClass: 'active',
+        errorClass: 'text-danger',
+        styleObj: {
+          color: 'red',
+          backgroundColor: 'black',
+          fontSize: '30px',
+          'font-weight': 'bold',
+          padding: '20px',
+          display: ['-webkit-box', '-ms-flexbox', 'flex']
+        }
+      }
+    })
+    </script>
+  </body>
+</html>

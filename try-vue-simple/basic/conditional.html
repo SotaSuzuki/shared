@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Welcome to Vue</title>
+    <style>
+    .title-enter-active, .title-leave-active {
+      transition: transform .6s ease;
+    }
+    .title-enter, .title-leave-to {
+      transform-origin: 0 50% 0;
+      transform: scale(0);
+    }
+    </style>
+  </head>
+  <body>
+
+    <nav>
+      <ul>
+        <li><a href="/">Top</a></li>
+        <li>
+          <span>Basic</span>
+          <ul>
+            <li><a href="/basic">/</a></li>
+            <li><a href="/basic/conditional.html">Conditional rendering</a></li>
+            <li><a href="/basic/list.html">List rendering</a></li>
+            <li><a href="/basic/class.html">Class &amp; Style</a></li>
+            <li><a href="/basic/model.html">Model</a></li>
+            <li><a href="/basic/components.html">Components</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+
+    <div id="app">
+      <button @click="seen = !seen" type="button">ぼたーん</button>
+      <transition name="title">
+        <div v-show="seen === true">
+          <h1>{{ title}}</h1>
+          <p>WOOOOOOOOOOOOOOOOOOOOOOOOO</p>
+        </div>
+      </transition>
+      <template v-if="seen">
+        <h1>{{title}}</h1>
+      </template>
+      <template v-else>
+        <h1>NoNo</h1>
+      </template>
+      <div>
+        <template v-if="loginType === 'user'">
+          <label for="user">username: </label>
+          <input v-model="username" id="user" type="text" key="user">
+        </template>
+        <template v-else-if="loginType === 'email'">
+          <label for="email">email: </label>
+          <input v-model="email" id="email" type="text" key="email">
+        </template>
+      </div>
+      <button @click="loginType = loginType === 'user' ? 'email' : 'user'" type="button">Toggle login type</button>
+    </div>
+
+    <script src="https://unpkg.com/vue"></script>
+
+    <script>
+
+    const vm = new Vue({
+      el: '#app',
+      data: {
+        title: 'WoWo',
+        seen: false,
+        loginType: 'user',
+        username: '',
+        email: ''
+      }
+    })
+    </script>
+  </body>
+</html>

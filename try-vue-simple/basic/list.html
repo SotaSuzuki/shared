@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Welcome to Vue</title>
+  </head>
+  <body>
+
+    <nav>
+      <ul>
+        <li><a href="/">Top</a></li>
+        <li>
+          <span>Basic</span>
+          <ul>
+            <li><a href="/basic">/</a></li>
+            <li><a href="/basic/conditional.html">Conditional rendering</a></li>
+            <li><a href="/basic/list.html">List rendering</a></li>
+            <li><a href="/basic/class.html">Class &amp; Style</a></li>
+            <li><a href="/basic/model.html">Model</a></li>
+            <li><a href="/basic/components.html">Components</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+
+    <div id="app">
+      <div v-html="heading"></div>
+      <div>
+        <span>todo list</span>
+        <ul v-bind:style="{ listStyleType: 'none', paddingLeft: 0 }">
+          <li v-for="(item, index) in concatedItems">
+            <input v-bind:id="'item' + index" v-bind:key="index" type="checkbox">
+            <label v-bind:for="'item' + index">{{item.name}}</label>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <ul>
+          <li v-for="(value, key, index) in obj" :key="index">
+            {{index}}.{{key}}: {{value}}
+          </li>
+        </ul>
+      </div>
+      <div>Even Numbers: {{evenNumbers}}</div>
+      <div>[
+        <span v-for="n in 20">{{n}}, </span>]
+      </div>
+      <div>
+        <!-- v-for は v-if より優先度が高い -->
+        <template v-for="n in 10" v-if="n % 2 === 0">
+          <input :id="n" type="checkbox">
+          <label :for="n">I am number {{n}}!</label>
+        </template>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/vue"></script>
+
+    <script>
+    const vm = new Vue({
+      el: '#app',
+      data: {
+        heading: '<h1>List Rendering</h1>',
+        items: [
+          { name: 'do my best' },
+          { name: 'wo wo wo' },
+          { name: 'that is right'}
+        ],
+        obj: {
+          firstName: 'Sota',
+          lastName: 'Suzuki',
+          age: 31
+        },
+        numbers: [1, 2, 3, 4, 5, 6]
+      },
+      methods: {
+        concat (array, name) {
+          return array.concat([{'name': name}])
+        }
+      },
+      computed: {
+        concatedItems () {
+          return this.concat(this.items, 'way')
+        },
+        evenNumbers () {
+          return this.numbers.filter(num => num % 2 === 0)
+        }
+      }
+    })
+
+    // somInstance.$set は Vue.set のエイリアス
+    vm.$set(vm.items, 0, { name: 'do your best' })
+    vm.items.splice(2, 1, { name: 'that is wrong' })
+
+    vm.$set(vm.obj, 'address', 'Fukuoka')
+    vm.obj = Object.assign({}, vm.obj, {
+      email: 'hogehoge@hoge',
+      favorite: 'walking'
+    })
+
+    </script>
+  </body>
+</html>
