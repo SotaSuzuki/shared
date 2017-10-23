@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Welcome to Vue</title>
+  </head>
+  <body>
+
+    <nav>
+      <ul>
+        <li><a href="/">Top</a></li>
+        <li>
+          <span>Basic</span>
+          <ul>
+            <li><a href="/basic">/</a></li>
+            <li><a href="/basic/conditional.html">Conditional rendering</a></li>
+            <li><a href="/basic/list.html">List rendering</a></li>
+            <li><a href="/basic/class.html">Class &amp; Style</a></li>
+            <li><a href="/basic/model.html">Model</a></li>
+            <li><a href="/basic/components.html">Components</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+
+    <div id="app">
+      <div>
+        <button @click="callAlert">Call Alert</button>
+        <!-- インラインステートメントハンドラで $event 変数を使うことにより DOM イベントを渡すことができる -->
+        <button @click="warn('I am a message', $event)">Common</button>
+        <a @click.prevent="callAlert" href="#">aaa</a>
+        <form v-on:submit.stop.prevent action="#">
+          <input @keyup.esc.enter="callAlert" type="text">
+          <input @click.once="callAlert" type="submit">
+          <button @click.left="callAlert">Button</button>
+        </form>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/vue"></script>
+
+    <script>
+    const vm = new Vue({
+      el: '#app',
+      methods: {
+        callAlert (e) {
+          console.log(e)
+          alert(e.target.tagName)
+        },
+        warn (message, event) {
+          console.log(event)
+          if (event) {
+            event.preventDefault
+          }
+          alert(message)
+        }
+      }
+    })
+
+    </script>
+  </body>
+</html>

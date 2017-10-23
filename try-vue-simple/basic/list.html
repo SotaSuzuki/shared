@@ -53,6 +53,24 @@
       </div>
     </div>
 
+    <div id="todo-list">
+      <h1>{{title}}</h1>
+      <div>
+        <input v-model="newTodoText" @keyup.enter="addNewTodo" type="text" placeholder="Add a todo">
+        <ul>
+          <li
+            is="todo-item"
+            v-for="(todo, index) in todos"
+            :title="todo.title"
+            :key="todo.id"
+            :number="todo.id"
+            @remove="todos.splice(index, 1)"
+            @reverse="todo.title = todo.title.split('').reverse().join('')"
+          ></li>
+        </ul>
+      </div>
+    </div>
+
     <script src="https://unpkg.com/vue"></script>
 
     <script>
@@ -95,6 +113,43 @@
     vm.obj = Object.assign({}, vm.obj, {
       email: 'hogehoge@hoge',
       favorite: 'walking'
+    })
+
+    const TodoItem = {
+      template: `
+      <li>
+        {{number}}. {{title}}
+        <button @click="$emit('remove')">Delete</button>
+        <button @click="$emit('reverse')">Reverse</button>
+      </li>
+      `,
+      props: {
+        title: String,
+        number: Number
+      }
+    }
+
+    const vmTodo = new Vue({
+      el: '#todo-list',
+      components: {
+        'todo-item': TodoItem
+      },
+      data: {
+        title: 'TODO LIST',
+        todos: [
+          { id: 1, title: 'Take out the trash' },
+          { id: 2, title: 'Flush the toilet' },
+          { id: 3, title: 'Do the dishes' },
+        ],
+        newTodoText: '',
+        nextTodoId: 4
+      },
+      methods: {
+        addNewTodo () {
+          this.todos.push({ id: this.nextTodoId++, title: this.newTodoText })
+          this.newTodoText = ''
+        }
+      }
     })
 
     </script>
