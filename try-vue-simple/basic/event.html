@@ -33,6 +33,8 @@
           <input @click.once="callAlert" type="submit">
           <button @click.left="callAlert">Button</button>
         </form>
+
+        <input @keyup.page-down="onPageDown" type="text">
       </div>
     </div>
 
@@ -43,15 +45,16 @@
       el: '#app',
       methods: {
         callAlert (e) {
-          console.log(e)
           alert(e.target.tagName)
         },
         warn (message, event) {
-          console.log(event)
           if (event) {
             event.preventDefault
           }
           alert(message)
+        },
+        onPageDown (e) {
+          console.log(e)
         }
       }
     })

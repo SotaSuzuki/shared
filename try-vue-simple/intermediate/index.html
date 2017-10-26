@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Welcome to Vue</title>
+  <style>
+  label {
+    display: block;
+  }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <h1>Hello</h1>
+    <example v-on:log="log" class="parent-class"></example>
+  </div>
+
+  <script src="https://unpkg.com/vue"></script>
+
+  <script>
+  Vue.component('example', {
+    template: '<div v-on:click="compLog" class="component-class">For example...</div>',
+    props: {
+      propA: {
+        type: Number,
+        default: 10
+      },
+      propB: {
+        type: Array,
+        required: false
+      },
+      propC: [String, Number],
+      propD: {
+        type: Function,
+        default: function () {
+          return { message: 'hello' }
+        }
+      },
+      propE: {
+        type: Number,
+        validator: function (value) {
+          return value > 100
+        }
+      }
+    },
+    methods: {
+      compLog (something) {
+        console.log(something, 'at a component')
+        this.$emit('log', something)
+      }
+    }
+  })
+
+  const vm = new Vue({
+    el: '#app',
+    methods: {
+      log (something) {
+        console.log(something, 'at a parent')
+      }
+    }
+  })
+  </script>
+
+</body>
+</html>
