@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <h1>An example of IndexedDB</h1>
+
+  <section>
+    <h2>Add User</h2>
+    <p>
+      <label for="name">name</label><input id="name" type="text">
+    </p>
+    <p>
+      <label for="email">email</label><input id="email" type="text">
+    </p>
+    <button id="save" type="button">save to your DB</button>
+  </section>
+
+
+  <section>
+    <h2>Registered users</h2>
+    <input id="user-id" type="text">
+    <button id="get-user">Get user from DB</button>
+    <table border="1" id="users"></table>
+  </section>
+
+  <script src="./script.js"></script>
+</body>
+</html>
