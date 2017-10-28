@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>try vue router</title>
+</head>
+<body>
+  <h1>Hello</h1>
+
+  <div id="app">
+    <nav>
+      <router-link to="/">TOP</router-link>
+      <router-link to="/users">ユーザ一覧</router-link>
+      <router-link v-bind:to="{ name: 'user', params: { id: 123 } }">ユーザ詳細</router-link>
+    </nav>
+    <button v-on:click="handleClickTo('/login')">login</button>
+    <button v-on:click="handleClickTo('/logout')">logout</button>
+    <router-view></router-view>
+  </div>
+
+  <script src="https://unpkg.com/vue"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-router/3.0.1/vue-router.min.js"></script>
+
+  <script type="x-template" id="user-list">
+  <div>
+    <div class="loading" v-if="loading">ロード中。。。</div>
+    <div class="error" v-if="error">{{ error }}</div>
+    <div v-for="(user, i) in users" :key="i">
+      <h2>{{ user.name }}</h2>
+    </div>
+  </div>
+  </script>
+
+  <script type="x-template" id="user-page">
+  <div class="user">
+    <h2>ユーザーIDは {{ $route.params.id }} です。</h2>
+    <router-link :to="'/user/' + $route.params.id + '/profile'">ユーザーのプロフィールページを見る</router-link>
+    <br>
+    <router-link :to="'/user/' + $route.params.id + '/posts'">ユーザーの投稿ページを見る</router-link>
+    <router-view></router-view>
+  </div>
+  </script>
+
+  <script type="x-template" id="login">
+  <div>
+    <h2>Login</h2>
+    <p v-if="$route.query.redirect">ログインしてくだしぃ</p>
+    <form v-on:submit.prevent="login" action="">
+      <label><input v-model="email" type="email" placeholder="email"/></label>
+      <label><input v-model="pass" type="password" placeholder="password"/></label>
+      <button type="submit">ログイン</button>
+      <p v-if="error" v-bind:style="{color: 'red'}">ログインにしっぱぃいい</p>
+    </form>
+  </div>
+  </script>
+
+  <script>
+
+  const Auth = {
+    login (email, pass, cb) {
+      setTimeout(() => {
+        if (email === 'vue@example.com' && pass === 'vue') {
+          localStorage.token = Math.random().toString(36).substring(7)
+          if (cb) {
+            cb(true)
+          }
+        } else {
+          if (cb) {
+            cb(false)
+          }
+        }
+      }, 0)
+    },
+
+    logout () {
+      delete localStorage.token
+    },
+
+    loggedIn () {
+      return !!localStorage.token
+    }
+  }
+
+  // 擬似的にAPI経由で情報を取得したようにする
+  const getUsers = (cb) => {
+    setTimeout(() => {
+      cb(null, [
+        {
+          id: 1,
+          name: 'Sota Suzuki'
+        },
+        {
+          id: 2,
+          name: 'Gero GeroPee'
+        }
+      ])
+    }, 2000)
+  }
+
+  const Login = {
+    template: '#login',
+    data () {
+      return {
+        email: 'vue@example.com',
+        pass: '',
+        error: false
+      }
+    },
+    methods: {
+      login () {
+        console.log()
+        Auth.login(this.email, this.pass, (loggedIn) => {
+          if (!loggedIn) {
+            this.error = true
+          } else {
+            this.$router.replace(this.$route.query.redirect || '/')
+          }
+        })
+      }
+    }
+  }
+
+  const UserPosts = {
+    template: '<div>{{ title }}</div>',
+    data () {
+      return {
+        title: '投稿一覧'
+      }
+    }
+  }
+
+  const TopPage = Vue.extend({
+    template: '<div>ここはトップだよ</div>'
+  })
+
+  const UserListPage = Vue.extend({
+    template: '#user-list',
+    data () {
+      return {
+        loading: false,
+        users () {
+          return []
+        },
+        error: null
+      }
+    },
+    // beforeRouteEnter (to, from, next) {
+    //   console.log('beforeRouterEnter called')
+    //   getUsers((err, users) => {
+    //     if (err) {
+    //       this.error = err.toString()
+    //       next()
+    //     } else {
+    //       // next に渡す callback でコンポーネントにアクセスできる
+    //       next((vm) => {
+    //         vm.users = users
+    //       })
+    //     }
+    //   })
+    // },
+    created () {
+      this.fetchData()
+    },
+    watch: {
+      '$route': 'fetchData'
+    },
+    methods: {
+      fetchData () {
+        this.loading = true
+        getUsers((err, users) => {
+          if (err) {
+            this.error = err.toString()
+          } else {
+            this.users = users
+          }
+          this.loading = false
+        })
+      }
+    }
+  })
+
+  const UserPage = {
+    template: '#user-page'
+  }
+
+  const router = new VueRouter({
+    // mode: 'history',
+    routes: [
+      {
+        path: '/',
+        component: TopPage,
+        alias: ['/top', '/toppage']
+      },
+      {
+        path: '/users',
+        component: UserListPage
+      },
+      {
+        path: '/user/:id',
+        name: 'user',
+        component: UserPage,
+        beforeEnter (to, from, next) {
+          if (!Auth.loggedIn()) {
+            next({
+              path: '/login',
+              query: { redirect: to.fullPath }
+            })
+          } else {
+            next()
+          }
+        },
+        children: [
+          {
+            path: 'profile',
+            component: {
+              template: '<div>プロフィール</div>'
+            }
+          },
+          {
+            path: 'posts',
+            component: UserPosts
+          }
+        ]
+      },
+      {
+        path: '/login',
+        component: Login
+      },
+      {
+        path: '/logout',
+        beforeEnter(to, from, next) {
+          Auth.logout()
+          next('/')
+        }
+      },
+      {
+        path: '*',
+        redirect: '/'
+      }
+    ],
+  })
+
+  router.beforeEach((to, from, next) => {
+    if (to.path === '/users') {
+      console.log(from.path, ' to ', to.path)
+    }
+    next()
+  })
+
+  const app = new Vue({
+    el: '#app',
+    router: router,
+    methods: {
+      handleClickTo (path) {
+        router.push(path)
+      }
+    }
+  })
+  </script>
+</body>
+</html>
