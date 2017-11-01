@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.0/css/bulma.min.css">
+  <style>
+    .message-enter-active, .message-leave-active {
+      transition: opacity .3s ease, transform .3s ease;
+    }
+    .message-enter, .message-leave-to {
+      transform: scale(1.1);
+      opacity: 0;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="root">
+    <div class="container">
+
+      <message title="Hello World">
+        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Adipisci ratione libero debitis nobis ex totam tempora ipsum excepturi.
+        Sunt culpa voluptas suscipit cumque quisquam eaque accusamus quos quibusdam illum fuga.
+      </message>
+
+      <message title="Hello Universe!">
+        Blah Blah Blah
+      </message>
+
+      <task>Go to the store</task>
+      <task>Go to the see</task>
+      <task>Go to under the ground</task>
+
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/vue"></script>
+  <script src="./slot.js"></script>
+
+</body>
+
+</html>

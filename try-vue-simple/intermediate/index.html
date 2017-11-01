@@ -12,6 +12,11 @@
   <div id="app">
     <h1>Hello</h1>
     <example v-on:log="log" class="parent-class"></example>
+    <ul>
+      <li v-for="(name, index) in names" :key="index">{{ name }}</li>
+    </ul>
+    <input v-model="newName" id="input" type="text">
+    <button @click="addName" id="button" type="button">Add name</button>
   </div>
 
   <script src="https://unpkg.com/vue"></script>
@@ -47,16 +52,33 @@
         console.log(something, 'at a component')
         this.$emit('log', something)
       }
-    }
+    },
   })
 
   const vm = new Vue({
     el: '#app',
+    data () {
+      return {
+        newName: '',
+        names: ['h', 'd', 'a', 'c'],
+      }
+    },
     methods: {
       log (something) {
         console.log(something, 'at a parent')
-      }
-    }
+      },
+      addName () {
+        this.names.push(this.newName)
+        this.newName = ''
+      },
+    },
+    mounted () {
+      // document.querySelector('#button').addEventListener('click', () => {
+      //   const name = document.querySelector('#input')
+      //   this.names.push(name.value)
+      //   name.value = ''
+      // })
+    },
   })
   </script>
 

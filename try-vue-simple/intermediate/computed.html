@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Welcome to Vue</title>
+  <style>
+    .red {
+      color: red;
+    }
+    .bold {
+      font-weight: normal;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <h1 :class="h1Classes">Hello</h1>
+    <h2>All tasks</h2>
+    <ul>
+      <li v-for="(task, i) in tasks">{{ task.desc }}</li>
+    </ul>
+    <h2>Incomplete tasks</h2>
+    <ul>
+      <li v-for="(task, i) in incompleteTasks">{{ task.desc }}</li>
+    </ul>
+    <h2>
+      <p>total: {{ totalNum }}</p>
+      <p>double: {{ doubleNumbers }}</p>
+    </h2>
+  </div>
+
+  <script src="https://unpkg.com/vue"></script>
+
+  <script>
+  const vm = new Vue({
+    el: '#app',
+    data: {
+      h1Classes: {
+        red: true,
+        bold: true,
+      },
+      tasks: [
+        { desc: 'Go to the shop tomorrow', complete: false },
+        { desc: 'Go to the shop after two days', complete: false },
+        { desc: 'Go to the shop after three days', complete: true },
+        { desc: 'Go to the shop after four days', complete: true },
+      ],
+      numbers: [20, 39, 49, 1, 48 ],
+    },
+    computed: {
+      incompleteTasks () {
+        return this.tasks.filter((task) => !task.complete)
+      },
+      totalNum () {
+        return this.numbers.reduce((a, b) => a + b)
+      },
+      doubleNumbers () {
+        return this.numbers.map(number => number * 2)
+      }
+    },
+  })
+  </script>
+
+</body>
+</html>
